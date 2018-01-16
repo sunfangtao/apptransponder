@@ -20,12 +20,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     public Permission getUrlByType(String serverId, String type) {
         synchronized (PermissionServiceImpl.class) {
-            Permission permission = urlMap.get(type);
+            Permission permission = urlMap.get(serverId + "-" + type);
             if (permission != null) {
                 return permission;
             }
         }
-        return permissionDao.getUrlByType(serverId, type);
+        Permission permission = permissionDao.getUrlByType(serverId, type);
+        urlMap.put(serverId + "-" + type, permission);
+        return permission;
     }
 
     public List<Permission> getPermissions(String serverId, String userId) {

@@ -5,6 +5,30 @@ package com.sft.util;
  */
 public class Params {
 
+    public static final String SERVER_ID = "serverId";
+    public static final String USER_ID = "userId";
+
+    /**
+     * 返回结果
+     */
+    public enum SqlType {
+
+        USER_INFO("userInfo"),
+        TYPE_URL("typeUrl"),
+        PERMISSION("permission"),
+        ROLE("role"),;
+
+        private String value;
+
+        SqlType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     /**
      * 返回结果
      */

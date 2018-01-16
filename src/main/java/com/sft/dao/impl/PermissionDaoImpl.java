@@ -4,6 +4,7 @@ import com.sft.dao.PermissionDao;
 import com.sft.db.SqlConnectionFactory;
 import com.sft.db.TypeSql;
 import com.sft.model.Permission;
+import com.sft.util.Params;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -28,10 +29,10 @@ public class PermissionDaoImpl implements PermissionDao {
 
         Permission permission = new Permission();
 
-        String sql = typeSql.getSqlByType(serverId, "getUrlByType");
+        String sql = typeSql.getSqlByType(serverId, Params.SqlType.TYPE_URL.getValue());
 
         try {
-            con = sqlConnectionFactory.getConnectByServerType(serverId, "getUrlByType");
+            con = sqlConnectionFactory.getConnectByServerType(serverId);
             ps = con.prepareStatement(sql);
             ps.setString(1, type);
             rs = ps.executeQuery();
@@ -55,10 +56,10 @@ public class PermissionDaoImpl implements PermissionDao {
         ResultSet rs = null;
 
         List<Permission> permissionList = new ArrayList<Permission>();
-        String sql = typeSql.getSqlByType(serverId, "getPermissions");
+        String sql = typeSql.getSqlByType(serverId, Params.SqlType.PERMISSION.getValue());
 
         try {
-            con = sqlConnectionFactory.getConnectByServerType(serverId, "getPermissions");
+            con = sqlConnectionFactory.getConnectByServerType(serverId);
             ps = con.prepareStatement(sql);
             ps.setString(1, userId);
             rs = ps.executeQuery();
@@ -83,10 +84,10 @@ public class PermissionDaoImpl implements PermissionDao {
         ResultSet rs = null;
 
         List<String> roleNameList = new ArrayList<String>();
-        String sql = typeSql.getSqlByType(serverId, "getRoles");
+        String sql = typeSql.getSqlByType(serverId, Params.SqlType.ROLE.getValue());
 
         try {
-            con = sqlConnectionFactory.getConnectByServerType(serverId, "getRoles");
+            con = sqlConnectionFactory.getConnectByServerType(serverId);
             ps = con.prepareStatement(sql);
             ps.setString(1, userId);
             rs = ps.executeQuery();

@@ -6,11 +6,12 @@
  */
 package com.sft.shiro.realm;
 
+import com.sft.dao.UserDao;
 import com.sft.model.AppUserModel;
 import com.sft.model.Permission;
-import com.sft.service.AppUserService;
 import com.sft.service.PermissionService;
 import com.sft.shiro.UserNamePasswordToken;
+import com.sft.util.Params;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -38,15 +39,15 @@ public class PasswordShiroRealm extends AuthorizingRealm {
     @Autowired
     private SessionManager sessionManager;
     @Resource
-    private AppUserService userService;
+    private UserDao userDao;
     @Resource
     private PermissionService permissionService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String serverId = (String) SecurityUtils.getSubject().getSession().getAttribute("serverId");
+        String serverId = (String) SecurityUtils.getSubject().getSession().getAttribute(Params.SERVER_ID);
         String account = (String) principalCollection.getPrimaryPrincipal();
-        String userId = userService.getUserInfoByPhone(serverId, account).getId();
+        String userId = userDao.getUserInfo(serverId, account).getId();
         SimpleAuthorizationInfo authorizationInfo = null;
         if (authorizationInfo == null) {
             authorizationInfo = new SimpleAuthorizationInfo();
@@ -82,7 +83,8 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 
             for (Session session : sessions) {
                 // 清除该用户以前登录时保存的session
-                if (token.getPrincipal().equals(String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY)))) {
+                if (token.getPrincipal().equals(String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY)))
+                        && token.getServerId().equals(session.getAttribute(Params.SERVER_ID))) {
                     sessionDAO.delete(session);
                     logger.info("已在线的用户：" + token.getPrincipal() + "被踢出");
                 }
@@ -94,11 +96,11 @@ public class PasswordShiroRealm extends AuthorizingRealm {
         }
 
         // TODO 获取用户信息
-        AppUserModel userModel = userService.getUserInfoByPhone(token.getServerId(), username);
+        AppUserModel userModel = userDao.getUserInfo(token.getServerId(), username);
         String password = userModel.getPassword();
 
-        SecurityUtils.getSubject().getSession().setAttribute("userId", userModel.getId());
-        SecurityUtils.getSubject().getSession().setAttribute("serverId", token.getServerId());
+        SecurityUtils.getSubject().getSession().setAttribute(Params.USER_ID, userModel.getId());
+        SecurityUtils.getSubject().getSession().setAttribute(Params.SERVER_ID, token.getServerId());
         return new SimpleAuthenticationInfo(username, password, getName());
     }
 

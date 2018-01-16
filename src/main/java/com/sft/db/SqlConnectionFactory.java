@@ -1,7 +1,6 @@
 package com.sft.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.sft.util.Util;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,18 +19,17 @@ public class SqlConnectionFactory {
 
     public static Map<String, DruidDataSource> druidDataSourceMap = new HashMap<String, DruidDataSource>();
 
-    public Connection getConnectByServerType(String serverId, String type) {
+    public Connection getConnectByServerType(String serverId) {
         try {
-            String key = Util.getConnectionKey(serverId, type);
-            if (!druidDataSourceMap.containsKey(key)) {
+            if (!druidDataSourceMap.containsKey(serverId)) {
                 DruidDataSource druidDataSource = createNewDataSource(serverId);
                 if (druidDataSource != null) {
-                    druidDataSourceMap.put(key, druidDataSource);
+                    druidDataSourceMap.put(serverId, druidDataSource);
                 } else {
                     return null;
                 }
             }
-            return druidDataSourceMap.get(key).getConnection();
+            return druidDataSourceMap.get(serverId).getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

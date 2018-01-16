@@ -1,20 +1,10 @@
 package com.sft.chain;
 
-import com.sft.model.Permission;
-import com.sft.service.PermissionService;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.util.CollectionUtils;
-import org.apache.shiro.util.StringUtils;
-
-import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
 
 public class ShiroPermissionFactory extends ShiroFilterFactoryBean {
-
-    @Resource
-    public PermissionService permissionService;
 
     public static String definition;
 
@@ -32,21 +22,6 @@ public class ShiroPermissionFactory extends ShiroFilterFactoryBean {
             section = ini.getSection("");
         }
 
-        List<Permission> permissions = permissionService.getPermissions("", "");
-        // 循环Resource的url,逐个添加到section中。section就是filterChainDefinitionMap,
-        // 里面的键就是链接URL,值就是存在什么条件才能访问该链接
-        if (permissions != null) {
-            for (Iterator<Permission> it = permissions.iterator(); it.hasNext(); ) {
-                Permission resource = it.next();
-                // 如果不为空值添加到section中
-                if (StringUtils.hasText(resource.getUrl()) && StringUtils.hasText(resource.getUrl())) {
-                    if (!resource.getUrl().startsWith("/")) {
-                        resource.setUrl("/" + resource.getUrl());
-                    }
-                    section.put(resource.getUrl(), "user");
-                }
-            }
-        }
         // 上传图片需要APP用户认证
         section.put("/trans/pic", "user");
         section.put("/**", "anon");

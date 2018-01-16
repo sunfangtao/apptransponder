@@ -1,7 +1,7 @@
 package com.sft.controller;
 
+import com.sft.dao.UserDao;
 import com.sft.model.AppUserModel;
-import com.sft.service.AppUserService;
 import com.sft.shiro.UserNamePasswordToken;
 import com.sft.util.Params;
 import com.sft.util.SendAppJSONUtil;
@@ -23,7 +23,7 @@ public class LoginController {
     private Logger logger = Logger.getLogger(LoginController.class);
 
     @Resource
-    private AppUserService userService;
+    private UserDao userDao;
 
     /**
      * 用户登录
@@ -48,7 +48,7 @@ public class LoginController {
                     resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.NOTLOGIN.getValue(), "请先登录！");
                 } else {
                     String serverId = req.getParameter("serverId");
-                    AppUserModel user = userService.getUserInfoByPhone(serverId, phone);
+                    AppUserModel user = userDao.getUserInfo(serverId, phone);
                     resultJson = "";
                     logger.info("用户开始登录 ：" + resultJson);
                 }

@@ -1,6 +1,5 @@
 package com.sft.db;
 
-import com.sft.util.Util;
 import org.apache.shiro.util.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import java.util.Map;
 
 @Service
 public class TypeSql {
-
     //
     @Resource
     PrivateSqlConnectionFactory sqlConnectionFactory;
@@ -28,9 +26,8 @@ public class TypeSql {
 
     public String getSqlByType(String serverId, String type) {
         synchronized (this) {
-            String key = Util.getConnectionKey(serverId, type);
 
-            String sql = sqlMap.get(key);
+            String sql = sqlMap.get(serverId + "-" + type);
             if (StringUtils.hasText(sql)) {
                 return sql;
             }
@@ -45,8 +42,8 @@ public class TypeSql {
                 ps.setString(2, serverId);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    sqlMap.put(key, rs.getString("value"));
-                    return sqlMap.get(key);
+                    sqlMap.put(serverId + "-" + type, rs.getString("value"));
+                    return sqlMap.get(serverId + "-" + type);
                 }
             } catch (Exception e) {
 
