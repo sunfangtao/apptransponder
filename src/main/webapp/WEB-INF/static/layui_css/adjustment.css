@@ -1,0 +1,64 @@
+/*
+@author yueyue
+*/
+.sy-layui-collapse{
+    border: none;
+}
+.sy-layui-colla-item{
+    border: none;
+}
+.sy-layui-colla-title{
+    width: 8px;
+    float: left;
+    background-color: transparent;
+    padding: 0 0 0 35px;
+}
+.sy-colla-checkbox{
+    width: auto;
+    float: left;
+    line-height: 42px !important;
+}
+.sy-colla-checkbox input[type='checkbox'],.sy-colla-submenu li input[type='checkbox']{
+    width: 16px;
+    height: 16px;
+    float: left;
+    line-height: 16px;
+    border: 1px solid #d2d2d2;
+    margin-top: 13px;
+}
+.sy-colla-checkbox span,.sy-colla-submenu li span{
+    display: inline-block;
+    float: left;
+    padding-left: 8px;
+    color: #666;
+}
+.sy-colla-blank0px{
+    background:none;
+    clear:both;
+    height:0;
+    font-size:0;
+    overflow:hidden;
+}
+.sy-colla-submenu{
+    margin-left: 50px;
+}
+.sy-colla-submenu li{
+    width: 100%;
+    float: left;
+    line-height: 32px;
+}
+.sy-colla-submenu li input[type='checkbox']{
+    margin-top: 8px;
+}
+.sy-layui-colla-content{
+    border: none;
+    padding: 0 15px;
+}
+.sy-layui-input-block{
+    margin-left: 18px;
+    margin-top: 10px;
+}
+.sy-layui-colla-item-mar{
+    margin-left: 10px;
+    margin-right: 10px;
+}

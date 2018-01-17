@@ -16,4 +16,5 @@
         </property>
     </bean>
 
+    <import resource="classpath:db_config.xml"/>
 </beans>

@@ -15,23 +15,31 @@ import java.util.Map;
 public class SqlConnectionFactory {
 
     @Resource
-    PrivateSqlConnectionFactory sqlConnectionFactory;
+    PrivateSqlConnectionFactory privateSqlConnectionFactory;
 
     public static Map<String, DruidDataSource> druidDataSourceMap = new HashMap<String, DruidDataSource>();
 
+    public void clearSourceMap(String serverId) {
+        synchronized (this) {
+            druidDataSourceMap.remove(serverId);
+        }
+    }
+
     public Connection getConnectByServerType(String serverId) {
-        try {
-            if (!druidDataSourceMap.containsKey(serverId)) {
-                DruidDataSource druidDataSource = createNewDataSource(serverId);
-                if (druidDataSource != null) {
-                    druidDataSourceMap.put(serverId, druidDataSource);
-                } else {
-                    return null;
+        synchronized (this) {
+            try {
+                if (!druidDataSourceMap.containsKey(serverId)) {
+                    DruidDataSource druidDataSource = createNewDataSource(serverId);
+                    if (druidDataSource != null) {
+                        druidDataSourceMap.put(serverId, druidDataSource);
+                    } else {
+                        return null;
+                    }
                 }
+                return druidDataSourceMap.get(serverId).getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            return druidDataSourceMap.get(serverId).getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -65,7 +73,7 @@ public class SqlConnectionFactory {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = sqlConnectionFactory.getConnection();
+            connection = privateSqlConnectionFactory.getConnection();
             ps = connection.prepareStatement("select ip,port,dbname,username,password from server where id = ?");
             ps.setString(1, serverId);
             rs = ps.executeQuery();
@@ -92,7 +100,7 @@ public class SqlConnectionFactory {
         } catch (Exception e) {
 
         } finally {
-            sqlConnectionFactory.closeConnetion(connection, ps, rs);
+            privateSqlConnectionFactory.closeConnetion(connection, ps, rs);
         }
         return null;
     }

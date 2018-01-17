@@ -12,6 +12,7 @@ import com.sft.model.Permission;
 import com.sft.service.PermissionService;
 import com.sft.shiro.UserNamePasswordToken;
 import com.sft.util.Params;
+import com.sft.util.SecurityUtil;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -45,7 +46,7 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String serverId = (String) SecurityUtils.getSubject().getSession().getAttribute(Params.SERVER_ID);
+        String serverId = SecurityUtil.getServerId(null);
         String account = (String) principalCollection.getPrimaryPrincipal();
         String userId = userDao.getUserInfo(serverId, account).getId();
         SimpleAuthorizationInfo authorizationInfo = null;
@@ -59,10 +60,10 @@ public class PasswordShiroRealm extends AuthorizingRealm {
                 }
                 authorizationInfo.addStringPermissions(permissionList);
             }
-            List<String> roleNameList = permissionService.getRoles(serverId, userId);
-            if (roleNameList != null) {
-                authorizationInfo.addRoles(roleNameList);
-            }
+//            List<String> roleNameList = permissionService.getRoles(serverId, userId);
+//            if (roleNameList != null) {
+//                authorizationInfo.addRoles(roleNameList);
+//            }
         }
         return authorizationInfo;
     }

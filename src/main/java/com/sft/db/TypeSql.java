@@ -14,7 +14,7 @@ import java.util.Map;
 public class TypeSql {
     //
     @Resource
-    PrivateSqlConnectionFactory sqlConnectionFactory;
+    PrivateSqlConnectionFactory privateSqlConnectionFactory;
 
     Map<String, String> sqlMap = new HashMap<String, String>();
 
@@ -36,10 +36,9 @@ public class TypeSql {
             PreparedStatement ps = null;
             ResultSet rs = null;
             try {
-                connection = sqlConnectionFactory.getConnection();
-                ps = connection.prepareStatement("select value from typesql where type = ? and server_id = ?");
-                ps.setString(1, type);
-                ps.setString(2, serverId);
+                connection = privateSqlConnectionFactory.getConnection();
+                ps = connection.prepareStatement("select t1.value from typesql t1,typetable t2 where t1.type = t2.id and t1.server_id = ?");
+                ps.setString(1, serverId);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     sqlMap.put(serverId + "-" + type, rs.getString("value"));
@@ -48,7 +47,7 @@ public class TypeSql {
             } catch (Exception e) {
 
             } finally {
-                sqlConnectionFactory.closeConnetion(connection, ps, rs);
+                privateSqlConnectionFactory.closeConnetion(connection, ps, rs);
             }
             throw new IllegalArgumentException("type 为空");
         }

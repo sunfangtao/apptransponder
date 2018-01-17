@@ -32,7 +32,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="com.aioute"/>
+    <context:component-scan base-package="com.sft"/>
 
     <!-- 当在web.xml 中 DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
     <mvc:default-servlet-handler/>

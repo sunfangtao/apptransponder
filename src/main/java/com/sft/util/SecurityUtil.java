@@ -23,15 +23,6 @@ public class SecurityUtil {
         return sb.toString();
     }
 
-    public synchronized static String getOrderNum(String subFix) {
-        if (subFix == null) {
-            subFix = "";
-        }
-        String date = DateUtil.getCurDate().replace("-", "").replace(":", "").replace(" ", "");
-        String orderNum = subFix + date + getOrderFix() + subFix.length();
-        return orderNum;
-    }
-
     public static String getLocalIp() {
         try {
             String ip = InetAddress.getLocalHost().getHostAddress(); //get the ip address
@@ -64,12 +55,24 @@ public class SecurityUtil {
     public static String getUserId(HttpServletRequest req) {
         try {
             if (SecurityUtils.getSubject() != null) {
-                return (String) SecurityUtils.getSubject().getSession().getAttribute("userId");
+                return (String) SecurityUtils.getSubject().getSession().getAttribute(Params.USER_ID);
             } else {
-                return req.getParameter("userId");
+                return req.getParameter(Params.USER_ID);
             }
         } catch (Exception e) {
-            return req.getParameter("userId");
+            return req.getParameter(Params.USER_ID);
+        }
+    }
+
+    public static String getServerId(HttpServletRequest req) {
+        try {
+            if (SecurityUtils.getSubject() != null) {
+                return (String) SecurityUtils.getSubject().getSession().getAttribute(Params.SERVER_ID);
+            } else {
+                return req.getParameter(Params.SERVER_ID);
+            }
+        } catch (Exception e) {
+            return req.getParameter(Params.SERVER_ID);
         }
     }
 

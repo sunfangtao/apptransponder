@@ -48,7 +48,7 @@ public class TransController {
                     if (permission == null || !StringUtils.hasText(permission.getType())) {
                         returnJson = SendAppJSONUtil.getRequireParamsMissingObject("type错误!");
                     } else {
-                        sb.append("ip=" + SecurityUtil.getRemoteIP(req) + " user=" + SecurityUtils.getSubject().getPrincipal() + " type=" + type);
+                        sb.append("ip=" + SecurityUtil.getRemoteIP(req) + " serverId=" + SecurityUtil.getServerId(req) + " user=" + SecurityUtils.getSubject().getPrincipal() + " type=" + type);
                         Map<String, String[]> paramsMap = req.getParameterMap();
                         if (paramsMap != null) {
                             sb.append("\nURL: ").append(permission.getAddress()).append("?");

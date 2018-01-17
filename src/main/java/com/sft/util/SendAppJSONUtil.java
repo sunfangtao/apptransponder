@@ -1,6 +1,7 @@
 package com.sft.util;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,7 @@ public class SendAppJSONUtil {
         returnJson.result = Params.ResultEnum.SUCCESS.getValue();
         returnJson.type = Params.ReasonEnum.NORMAL.getValue();
         returnJson.message = "";
+        returnJson.data = new JsonObject();
 
         if (object != null) {
             Json json = new Json();

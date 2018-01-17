@@ -1,7 +1,5 @@
 package com.sft.controller;
 
-import com.sft.dao.UserDao;
-import com.sft.model.AppUserModel;
 import com.sft.shiro.UserNamePasswordToken;
 import com.sft.util.Params;
 import com.sft.util.SendAppJSONUtil;
@@ -12,7 +10,6 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,9 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private Logger logger = Logger.getLogger(LoginController.class);
-
-    @Resource
-    private UserDao userDao;
 
     /**
      * 用户登录
@@ -47,24 +41,16 @@ public class LoginController {
                     logger.info("用户请求未认证");
                     resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.NOTLOGIN.getValue(), "请先登录！");
                 } else {
-                    String serverId = req.getParameter("serverId");
-                    AppUserModel user = userDao.getUserInfo(serverId, phone);
-                    resultJson = "";
+                    resultJson = SendAppJSONUtil.getNormalString(null);
                     logger.info("用户开始登录 ：" + resultJson);
                 }
             } else {
                 // 失败
                 logger.info("用户登录失败 " + errorClassName);
                 if (errorClassName.contains("IncorrectCredentialsException")) {
-                    resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.PASSWORDERROR.getValue(), "验证码错误！");
+                    resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.PASSWORDERROR.getValue(), "密码错误！");
                 } else if (errorClassName.contains("UnknownAccountException")) {
                     resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.NOACCOUNT.getValue(), "用户不存在！");
-                } else if (errorClassName.contains("NoCodeException")) {
-                    resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.PERMISSION.getValue(), "请获取验证码！");
-                } else if (errorClassName.contains("CodeErrorException")) {
-                    resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.PERMISSION.getValue(), "验证码错误！");
-                } else if (errorClassName.contains("CodeInvalicException")) {
-                    resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.PERMISSION.getValue(), "验证码失效！");
                 } else {
                     resultJson = SendAppJSONUtil.getFailResultObject("", "登录失败！");
                 }

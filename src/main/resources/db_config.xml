@@ -39,7 +39,7 @@
 
     </bean>
 
-    <bean id="sqlConnectionFactory" class="com.sft.db.PrivateSqlConnectionFactory">
+    <bean id="privateSqlConnectionFactory" class="com.sft.db.PrivateSqlConnectionFactory">
         <property name="dataSource" ref="privateDataSource"/>
     </bean>
 

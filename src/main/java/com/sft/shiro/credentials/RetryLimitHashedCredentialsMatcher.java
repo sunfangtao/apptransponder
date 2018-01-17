@@ -23,10 +23,10 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
                 if (token2.isThirdLogin()) {
                     return true;
                 }
-                String loginPassword = Encodes.entryptPassword(new String(token2.getPassword()));
-                if (loginPassword.equals(info.getCredentials())) {
-                    return true;
+                if (token2.getPassword() == null) {
+                    return false;
                 }
+                return Encodes.validatePassword(new String(token2.getPassword()), (String) info.getCredentials());
             }
         }
         return false;

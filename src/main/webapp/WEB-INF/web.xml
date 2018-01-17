@@ -9,7 +9,7 @@
 
     <context-param>
         <param-name>webAppRootKey</param-name>
-        <param-value>transponder.root</param-value>
+        <param-value>apptransponder.root</param-value>
     </context-param>
 
     <!-- 指定Spring Bean的配置文件所在目录。默认配置在WEB-INF目录下 -->

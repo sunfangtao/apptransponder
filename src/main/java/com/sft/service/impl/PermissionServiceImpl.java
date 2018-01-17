@@ -1,11 +1,13 @@
 package com.sft.service.impl;
 
 import com.sft.dao.PermissionDao;
+import com.sft.dao.ServerDao;
 import com.sft.model.Permission;
 import com.sft.service.PermissionService;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -17,6 +19,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Resource
     private PermissionDao permissionDao;
+    @Resource
+    private ServerDao serverDao;
 
     public Permission getUrlByType(String serverId, String type) {
         synchronized (PermissionServiceImpl.class) {
@@ -26,6 +30,10 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
         Permission permission = permissionDao.getUrlByType(serverId, type);
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("id", serverId);
+        permission.setAddress(serverDao.getSever(map, 1, 1).get(0).getAddress() + permission.getAddress());
         urlMap.put(serverId + "-" + type, permission);
         return permission;
     }
