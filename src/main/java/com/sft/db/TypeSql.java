@@ -37,8 +37,9 @@ public class TypeSql {
             ResultSet rs = null;
             try {
                 connection = privateSqlConnectionFactory.getConnection();
-                ps = connection.prepareStatement("select t1.value from typesql t1,typetable t2 where t1.type = t2.id and t1.server_id = ?");
+                ps = connection.prepareStatement("select t1.value from typesql t1,typetable t2 where t1.type = t2.id and t1.server_id = ? and t2.type = ?");
                 ps.setString(1, serverId);
+                ps.setString(2, type);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     sqlMap.put(serverId + "-" + type, rs.getString("value"));
