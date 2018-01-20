@@ -18,7 +18,7 @@ public class FTPPicUtil {
             if (ftpUtil.makeDirecrotys(dir, "/")) {
                 if (ftpUtil.upload(ftpUtil.getCurPath() + dir, file, fileName)) {
 //                    return "ftp://" + ftpUtil.getUsername() + ":" + ftpUtil.getPassword() + "@" + ftpUtil.getUrl() + ":" + ftpUtil.getPort() + "/" + dir + "/" + fileName;
-                    return "http://221.0.91.34:5080/ftp/" + dir + "/" + fileName;
+                    return "http://221.0.91.34:5082/ftp/" + dir + "/" + fileName;
                 }
             }
         } catch (Exception e) {
