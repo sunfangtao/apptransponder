@@ -4,8 +4,11 @@ import com.sft.dao.ServerDao;
 import com.sft.db.SqlConnectionFactory;
 import com.sft.db.TypeSql;
 import com.sft.model.ServerModel;
+import com.sft.service.PermissionService;
 import com.sft.util.*;
 import org.apache.log4j.Logger;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +30,11 @@ public class ServerController {
     @Resource
     TypeSql typeSql;
     @Resource
+    PermissionService permissionService;
+    @Resource
     private ServerDao serverDao;
+    @Resource
+    private EhCacheManager shiroCacheManager;
 
     /**
      * 添加服务
@@ -97,5 +104,54 @@ public class ServerController {
         List<ServerModel> serverList = serverDao.getSever(null, page, pageSize);
         int count = serverDao.getCount(null);
         return SendPlatJSONUtil.getPageJsonString(0, "", count, serverList);
+    }
+
+    /**
+     * 更新权限信息（清缓存）
+     *
+     * @param req
+     * @param res
+     */
+    @RequestMapping("updatePermissionCache")
+    public void permissionUpdate(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            logger.info("permissionUpdate");
+            permissionService.update();
+            res.getWriter().write(SendAppJSONUtil.getNormalString(null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * shiro认证授权缓存
+     *
+     * @param req
+     * @param res
+     */
+    @RequestMapping("updateAuthorizationCache")
+    public void shiroCache(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            String account = req.getParameter("account");
+            clearAuthorizationInfo(account);
+            String returnJson = SendAppJSONUtil.getNormalString("授权信息刷新成功!");
+            res.setCharacterEncoding("UTF-8");
+            res.getWriter().write(returnJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 清除用户的授权信息
+     */
+    private void clearAuthorizationInfo(String userName) {
+        if (userName != null) {
+            Cache<Object, Object> cache = shiroCacheManager.getCache("authorizationCache");
+            cache.remove(userName);
+        } else {
+            Cache<Object, Object> cache = shiroCacheManager.getCache("authorizationCache");
+            cache.clear();
+        }
     }
 }

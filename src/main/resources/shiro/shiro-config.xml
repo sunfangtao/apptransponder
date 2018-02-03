@@ -33,6 +33,8 @@
         <property name="realm" ref="shiroDbRealm"/>
         <!-- session 管理器 -->
         <property name="sessionManager" ref="sessionManager"/>
+        <!-- 缓存管理器 认证由子服务器管理,权限由redis管理-->
+        <property name="cacheManager" ref="shiroCacheManager"/>
     </bean>
 
     <!--3、realm -->
@@ -63,5 +65,12 @@
           class="com.sft.shiro.credentials.RetryLimitHashedCredentialsMatcher">
         <property name="storedCredentialsHexEncoded" value="false"/>
     </bean>
+
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:cache/ehcache.xml"/>
+    </bean>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 </beans>
