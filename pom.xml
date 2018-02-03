@@ -25,6 +25,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.aioute</groupId>
+            <artifactId>util</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework</groupId>

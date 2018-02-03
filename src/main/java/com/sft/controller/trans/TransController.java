@@ -1,5 +1,7 @@
 package com.sft.controller.trans;
 
+import com.aioute.util.SendAppJSONUtil;
+import com.aioute.util.SingleLock;
 import com.sft.model.Permission;
 import com.sft.service.PermissionService;
 import com.sft.util.*;
@@ -35,7 +37,7 @@ public class TransController {
      */
     @RequestMapping("app")
     public void transPlat(HttpServletRequest req, HttpServletResponse res) {
-        Lock lock = MtbhLock.getLock(SecurityUtil.getRemoteIP(req));
+        Lock lock = SingleLock.getLock(SecurityUtil.getRemoteIP(req));
         lock.lock();
         try {
             String returnJson = null;

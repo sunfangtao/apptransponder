@@ -1,12 +1,12 @@
 package com.sft.controller;
 
+import com.aioute.util.SendAppJSONUtil;
+import com.aioute.util.SendPlatJSONUtil;
 import com.sft.dao.SqlDao;
 import com.sft.db.TypeSql;
 import com.sft.model.SqlModel;
 import com.sft.util.PagingUtil;
 import com.sft.util.Params;
-import com.sft.util.SendAppJSONUtil;
-import com.sft.util.SendPlatJSONUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
