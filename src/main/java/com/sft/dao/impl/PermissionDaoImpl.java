@@ -38,7 +38,11 @@ public class PermissionDaoImpl implements PermissionDao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 permission.setType(rs.getString("type"));
-                permission.setIs_user(rs.getBoolean("is_user"));
+                try {
+                    permission.setIs_user(rs.getBoolean("is_user"));
+                } catch (Exception e) {
+                    permission.setIs_user(false);
+                }
                 permission.setAddress(rs.getString("address"));
                 return permission;
             }

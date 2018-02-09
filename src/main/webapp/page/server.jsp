@@ -107,7 +107,7 @@
             elem: '#server_talbe', // 指定原始表格元素选择器（推荐id选择器）
             height: 700, // 容器高度
             cols: [[
-                // {field: 'id', title: 'ID', width: 150, align: 'center'},
+                {field: 'id', title: 'ID', width: 150, align: 'center'},
                 {field: 'name', title: '名称', width: 150, align: 'center'},
                 {field: 'ip', title: '数据库地址', width: 200, align: 'center'},
                 {field: 'port', title: '端口', width: 80, align: 'center'},

@@ -4,7 +4,10 @@ import com.aioute.util.SendAppJSONUtil;
 import com.aioute.util.SingleLock;
 import com.sft.model.Permission;
 import com.sft.service.PermissionService;
-import com.sft.util.*;
+import com.sft.util.FTPPicUtil;
+import com.sft.util.HttpClient;
+import com.sft.util.Params;
+import com.sft.util.SecurityUtil;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.util.StringUtils;
@@ -76,7 +79,9 @@ public class TransController {
                     returnJson = SendAppJSONUtil.getRequireParamsMissingObject("没有type!");
                 }
 
-                if (returnJson == null) return;
+                if (returnJson == null) {
+                    returnJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.SERVEREXCEPTION.getValue(), "请稍后再试！");
+                }
                 logger.info(returnJson);
                 res.getWriter().write(returnJson);
             } catch (Exception e) {
