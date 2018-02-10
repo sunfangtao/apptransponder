@@ -13,4 +13,6 @@ public interface PermissionService {
     public List<String> getRoles(String serverId, String userId);
 
     public void update();
+
+    public void update(String serverId);
 }

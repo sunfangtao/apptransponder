@@ -8,7 +8,8 @@ import com.sft.db.SqlConnectionFactory;
 import com.sft.db.TypeSql;
 import com.sft.model.ServerModel;
 import com.sft.service.PermissionService;
-import com.sft.util.*;
+import com.sft.util.PagingUtil;
+import com.sft.util.Params;
 import org.apache.log4j.Logger;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -68,7 +69,7 @@ public class ServerController {
     }
 
     /**
-     * 添加服务
+     * 更新服务
      *
      * @param req
      * @param res
@@ -84,6 +85,7 @@ public class ServerController {
                 // 更新成功
                 sqlConnectionFactory.clearSourceMap(serverModel.getId());
                 typeSql.clearSqlMap();
+                permissionService.update(serverModel.getId());
             } else {
                 // 更新失败
                 resultJson = SendAppJSONUtil.getFailResultObject(Params.ReasonEnum.SQLEXCEPTION.getValue(), "操作失败");

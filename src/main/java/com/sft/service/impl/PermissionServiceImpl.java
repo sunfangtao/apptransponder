@@ -7,10 +7,7 @@ import com.sft.service.PermissionService;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Repository
 public class PermissionServiceImpl implements PermissionService {
@@ -49,6 +46,20 @@ public class PermissionServiceImpl implements PermissionService {
     public void update() {
         synchronized (PermissionServiceImpl.class) {
             urlMap.clear();
+        }
+    }
+
+    public void update(String serverId) {
+        synchronized (PermissionServiceImpl.class) {
+            List<String> keyList = new ArrayList<String>();
+            for (String key : urlMap.keySet()) {
+                if (key.startsWith(serverId)) {
+                    keyList.add(key);
+                }
+            }
+            for (int i = 0; i < keyList.size(); i++) {
+                urlMap.remove(keyList.get(i));
+            }
         }
     }
 }
