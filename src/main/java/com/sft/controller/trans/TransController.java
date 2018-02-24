@@ -40,8 +40,8 @@ public class TransController {
      */
     @RequestMapping("app")
     public void transPlat(HttpServletRequest req, HttpServletResponse res) {
-        Lock lock = SingleLock.getLock(SecurityUtil.getRemoteIP(req));
-        lock.lock();
+//        Lock lock = SingleLock.getLock(SecurityUtil.getRemoteIP(req));
+//        lock.lock();
         try {
             String returnJson = null;
             String type = req.getParameter("type");
@@ -90,7 +90,7 @@ public class TransController {
         } catch (Exception e) {
 
         } finally {
-            lock.unlock();
+//            lock.unlock();
         }
     }
 

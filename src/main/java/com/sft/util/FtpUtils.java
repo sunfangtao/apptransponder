@@ -17,6 +17,11 @@ import java.util.regex.Pattern;
 
 public class FtpUtils {
 
+    public static void main(String[] args) {
+        String s = "奥迪";
+        char c = '奥';
+    }
+
     private static Logger logger = Logger.getLogger(FtpUtils.class);
 
     private FTPClient ftpClient = null;

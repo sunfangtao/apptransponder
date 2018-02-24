@@ -5,6 +5,21 @@ package com.sft.util;
  */
 public class Params {
 
+    public static void main(String[] args) {
+        // 贷款利率
+        float x = 0.0068f;
+        // 贷款年限
+        float year = 3f;
+        // 首付比率
+        float rate = 0.3f;
+        // 总价格
+        float total = 2.4f;
+
+        float first = (int) (total * rate * 100)/100f;
+        int month = (int) Math.ceil(total * (1 - rate) * (1 / (12 * year) + x) * 10000);
+        System.out.println("first=" + first + " month=" + month);
+    }
+
     public static final String SERVER_ID = "serverId";
     public static final String USER_ID = "userId";
 
