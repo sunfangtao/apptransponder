@@ -8,6 +8,8 @@ layui.use('element', function () {
             $("#iframe").attr("src", ctx + "/page/server.jsp");
         } else if (data.text() == "SQL管理") {
             $("#iframe").attr("src", ctx + "/page/sql.jsp");
+        } else if (data.text() == "APP版本管理") {
+            $("#iframe").attr("src", ctx + "/page/version.jsp");
         }
     });
 });

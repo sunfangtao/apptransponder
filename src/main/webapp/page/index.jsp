@@ -17,6 +17,7 @@
     <ul class="layui-nav" lay-filter="nav_bar">
         <li class="layui-nav-item"><a>服务管理</a></li>
         <li class="layui-nav-item"><a>SQL管理</a></li>
+        <li class="layui-nav-item"><a>APP版本管理</a></li>
     </ul>
 </div>
 
