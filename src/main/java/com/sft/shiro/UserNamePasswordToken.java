@@ -8,7 +8,7 @@ public class UserNamePasswordToken extends UsernamePasswordToken {
     private String serverId;
 
     public UserNamePasswordToken(String username, String password, boolean isThirdLogin, String serverId) {
-        super(username, password);
+        super(username + "@" + serverId, password);
         this.isThirdLogin = isThirdLogin;
         this.serverId = serverId;
     }

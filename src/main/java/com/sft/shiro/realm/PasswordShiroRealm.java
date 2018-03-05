@@ -75,6 +75,8 @@ public class PasswordShiroRealm extends AuthorizingRealm {
         UserNamePasswordToken token = (UserNamePasswordToken) authenticationToken;
         String username = token.getUsername();
 
+        logger.info("username=" + username);
+
         if (sessionManager instanceof DefaultWebSessionManager) {
             DefaultWebSessionManager defaultWebSessionManager = (DefaultWebSessionManager) sessionManager;
 
@@ -92,12 +94,12 @@ public class PasswordShiroRealm extends AuthorizingRealm {
             }
         }
 
-        if (!StringUtils.hasText(username)) {
+        if (!StringUtils.hasText(getRealUsername(username))) {
             throw new UnknownAccountException("");
         }
 
         // TODO 获取用户信息
-        AppUserModel userModel = userDao.getUserInfo(token.getServerId(), username);
+        AppUserModel userModel = userDao.getUserInfo(token.getServerId(), getRealUsername(username));
         String password = userModel.getPassword();
 
         SecurityUtils.getSubject().getSession().setAttribute(Params.USER_ID, userModel.getId());
@@ -105,4 +107,13 @@ public class PasswordShiroRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(username, password, getName());
     }
 
+    private String getRealUsername(String userName) {
+        if (userName == null) {
+            return null;
+        }
+        if (userName.contains("@")) {
+            return userName.substring(0, userName.lastIndexOf("@"));
+        }
+        return userName;
+    }
 }
