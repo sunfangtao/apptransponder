@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,27 @@ public class VersionController {
 
     @Resource
     private VersionDao versionDao;
+
+    /**
+     * 下载最新版的APP
+     *
+     * @param req
+     * @param res
+     */
+    @ResponseBody
+    @RequestMapping("getNewVersionByServerId")
+    public void getNewVersionByServerId(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            VersionModel versionModel = versionDao.getVersionByServerId(req.getParameter("serverId"));
+            if(versionModel == null){
+                res.sendError(404, "File not found!");
+                return;
+            }
+            res.sendRedirect(versionModel.getVersionUrl());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     /**
      * 添加版本
