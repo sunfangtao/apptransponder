@@ -167,7 +167,8 @@ public class VersionDaoImpl implements VersionDao {
         ResultSet rs = null;
 
         StringBuffer sb = new StringBuffer();
-        sb.append("select * from version_info where server_id = ?");
+        sb.append("select v.*,s.name as name from version_info v,server s where v.server_id = ?");
+        sb.append(" and s.id = v.server_id");
 
         try {
             con = privateSqlConnectionFactory.getConnection();
@@ -181,6 +182,8 @@ public class VersionDaoImpl implements VersionDao {
                 versionModel.setTitle(rs.getString("title"));
                 versionModel.setContent(rs.getString("content"));
                 versionModel.setIsForce(rs.getString("is_force"));
+                versionModel.setServerId(serverId);
+                versionModel.setServerName(rs.getString("name"));
 
                 return versionModel;
             }

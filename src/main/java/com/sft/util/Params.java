@@ -18,6 +18,10 @@ public class Params {
         float first = (int) (total * rate * 100)/100f;
         int month = (int) Math.ceil(total * (1 - rate) * (1 / (12 * year) + x) * 10000);
         System.out.println("first=" + first + " month=" + month);
+
+        String fileName = "/data/APK/apache-tomcat-8.5.11/webapps/apptransponder/金融.png";
+        String downLoadUrl = "http://221.0.91.34:3082" + fileName.substring(fileName.lastIndexOf("webapps") + "webapps".length());
+        System.out.println(downLoadUrl);
     }
 
     public static final String SERVER_ID = "serverId";

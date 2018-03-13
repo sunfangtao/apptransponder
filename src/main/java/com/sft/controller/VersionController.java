@@ -4,8 +4,10 @@ import com.aioute.util.SendAppJSONUtil;
 import com.aioute.util.SendPlatJSONUtil;
 import com.sft.dao.VersionDao;
 import com.sft.model.VersionModel;
+import com.sft.util.CRCode;
 import com.sft.util.PagingUtil;
 import com.sft.util.Params;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +44,71 @@ public class VersionController {
     public void getNewVersionByServerId(HttpServletRequest req, HttpServletResponse res) {
         try {
             VersionModel versionModel = versionDao.getVersionByServerId(req.getParameter("serverId"));
-            if(versionModel == null){
+            if (versionModel == null) {
                 res.sendError(404, "File not found!");
                 return;
             }
             res.sendRedirect(versionModel.getVersionUrl());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 下载最新版的APP的二维码
+     *
+     * @param req
+     * @param res
+     */
+    @ResponseBody
+    @RequestMapping("getDownload")
+    public void getDownload(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            VersionModel versionModel = versionDao.getVersionByServerId(req.getParameter("serverId"));
+            if (versionModel == null) {
+                res.sendError(404, "File not found!");
+                return;
+            }
+            String crCodeUrl = "http://221.0.91.34:3080/apptransponder/version/getNewVersionByServerId?serverId=" + versionModel.getServerId();
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+            try {
+                String fileName = CRCode.getQRCode(crCodeUrl, versionModel.getServerName(), req);
+                logger.info("fileName=" + fileName);
+                String downLoadUrl = "";
+                if (fileName.contains("webapps")) {
+                    downLoadUrl = "http://221.0.91.34:3080" + fileName.substring(fileName.lastIndexOf("webapps") + "webapps".length());
+                } else {
+                    downLoadUrl = "http://221.0.91.34:29249/" + fileName.substring(fileName.lastIndexOf("apptransponder") + "apptransponder".length() + 1);
+                }
+                logger.info("downLoadUrl=" + downLoadUrl);
+
+                res.getWriter().write(downLoadUrl);
+                res.reset();// 清空输出流
+
+                String resultFileName = URLEncoder.encode("123","UTF-8");
+//                res.setCharacterEncoding("UTF-8");
+//                res.setHeader("Content-disposition", "attachment; filename=" + resultFileName);// 设定输出文件头
+//                res.setContentType("application/png");// 定义输出类型
+                //输入流：本地文件路径
+                DataInputStream in = new DataInputStream(new FileInputStream(fileName));
+                //输出流
+                OutputStream out = res.getOutputStream();
+                //输出文件
+                int bytes = 0;
+                byte[] bufferOut = new byte[1024];
+                while ((bytes = in.read(bufferOut)) != -1) {
+                    out.write(bufferOut, 0, bytes);
+                }
+                out.close();
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+                IOUtils.closeQuietly(outputStream);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

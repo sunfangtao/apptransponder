@@ -78,6 +78,7 @@
 
 <script type="text/html" id="barTool">
     <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-mini" lay-event="download">下载</a>
 </script>
 
 <script src="${ctx}/static/layui/layui.js" charset="utf-8"></script>
@@ -116,8 +117,13 @@
         });
 
         table.on('tool(versionTable)', function (obj) {
-            // 编辑模块
-            editVersion(obj);
+            if (obj.event == 'edit') {
+                // 编辑模块
+                editVersion(obj);
+            } else if (obj.event == 'download') {
+                // 下载二维码
+                download(obj);
+            }
         });
 
         selectionServerInit();

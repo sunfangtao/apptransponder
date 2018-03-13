@@ -49,6 +49,26 @@ function resetForm() {
 }
 
 /**
+ * 下载二维码图片，扫描可下载APP（仅限Android）
+ */
+function download(obj) {
+    var $ = layui.jquery;
+    $.ajax({
+        type: 'post',
+        url: ctx + '/version/getDownload',
+        data: {
+            "serverId": obj.data.serverId,
+        },
+        success: function (data) {
+            alert(data);
+        },
+        error: function (request) {
+            layer.msg("下载失败!", {time: 1500});
+        }
+    });
+}
+
+/**
  * 编辑
  * @param obj
  */
