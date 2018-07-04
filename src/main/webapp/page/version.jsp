@@ -103,7 +103,7 @@
                 {field: 'title', title: '标题', width: 180, align: 'center'},
                 {field: 'content', title: '更新内容', width: 300, align: 'center'},
                 {field: 'isForce', title: '是否强制更新', width: 120, align: 'center'},
-                {fixed: 'right', width: 80, align: 'center', toolbar: '#barTool'}
+                {fixed: 'right', width: 160, align: 'center', toolbar: '#barTool'}
             ]], // 设置表头
             request: {
                 pageName: 'page', // 页码的参数名称，默认：page

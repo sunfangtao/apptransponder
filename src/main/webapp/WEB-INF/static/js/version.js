@@ -60,7 +60,7 @@ function download(obj) {
             "serverId": obj.data.serverId,
         },
         success: function (data) {
-            alert(data);
+            location.href = data;
         },
         error: function (request) {
             layer.msg("下载失败!", {time: 1500});

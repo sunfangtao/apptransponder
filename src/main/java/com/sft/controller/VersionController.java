@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,24 +84,17 @@ public class VersionController {
                 logger.info("downLoadUrl=" + downLoadUrl);
 
                 res.getWriter().write(downLoadUrl);
-                res.reset();// 清空输出流
-
-                String resultFileName = URLEncoder.encode("123","UTF-8");
+//                String resultFileName = URLEncoder.encode("123", "UTF-8");
+                //设置响应
+//                res.setContentType("application/force-download");
 //                res.setCharacterEncoding("UTF-8");
 //                res.setHeader("Content-disposition", "attachment; filename=" + resultFileName);// 设定输出文件头
-//                res.setContentType("application/png");// 定义输出类型
-                //输入流：本地文件路径
-                DataInputStream in = new DataInputStream(new FileInputStream(fileName));
-                //输出流
-                OutputStream out = res.getOutputStream();
-                //输出文件
-                int bytes = 0;
-                byte[] bufferOut = new byte[1024];
-                while ((bytes = in.read(bufferOut)) != -1) {
-                    out.write(bufferOut, 0, bytes);
-                }
-                out.close();
-                in.close();
+
+//                inputStream = new FileInputStream(new File(fileName));
+//                outputStream = res.getOutputStream();
+//
+//                IOUtils.copy(inputStream, outputStream);
+//                res.flushBuffer();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -197,7 +189,6 @@ public class VersionController {
     @ResponseBody
     @RequestMapping("getNewVersion")
     public String getVersionByServerId(HttpServletRequest req, HttpServletResponse res) {
-
         VersionModel versionModel = versionDao.getVersionByServerId(req.getParameter("serverId"));
         if (versionModel == null) {
             return SendAppJSONUtil.getNullResultObject();
