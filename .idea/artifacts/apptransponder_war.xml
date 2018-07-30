@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="apptransponder:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="apptransponder.war">
+      <element id="artifact" artifact-name="apptransponder:war exploded" />
+    </root>
+  </artifact>
+</component>
