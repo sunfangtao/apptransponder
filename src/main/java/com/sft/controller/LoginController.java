@@ -64,19 +64,19 @@ public class LoginController {
     @RequestMapping("test")
     public void testLogin(HttpServletRequest req, HttpServletResponse res) {
         try {
-            String phone = req.getParameter("phone");
-            String code = req.getParameter("code");
+            String username = req.getParameter("username");
+            String password = req.getParameter("password");
             String serverId = req.getParameter("serverId");
             // 模拟登录
-            UserNamePasswordToken token = new UserNamePasswordToken(phone, code, false, serverId);
+            UserNamePasswordToken token = new UserNamePasswordToken(username, password, false, serverId);
             try {
                 SecurityUtils.getSubject().login(token);
-                logger.info("用户开始登录(测试接口) ：phone=" + phone + " code=" + code);
-                res.getWriter().write("用户测试登录成功 phone=" + phone);
+                logger.info("用户开始登录(测试接口) ：username=" + username + " password=" + password);
+                res.getWriter().write("用户测试登录成功 username=" + username);
             } catch (Exception e) {
                 e.printStackTrace();
-                res.getWriter().write("用户测试登录失败 phone=" + phone);
-                logger.info("用户开始登录(测试接口) ：phone=" + phone + " code=" + code);
+                res.getWriter().write("用户测试登录失败 username=" + username);
+                logger.info("用户开始登录(测试接口) ：username=" + username + " password=" + password);
             }
         } catch (Exception e) {
             e.printStackTrace();

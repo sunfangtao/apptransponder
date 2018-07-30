@@ -43,8 +43,11 @@ public class CRCode {
             if (!file.exists()) {
                 file.mkdirs();
             }
-            file = new File(filePath, fileName);
+            file = new File(filePath, productName.replace(" ",""));
             if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                file.delete();
                 file.createNewFile();
             }
             ZXingCode zp = new ZXingCode();

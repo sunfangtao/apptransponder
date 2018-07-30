@@ -18,8 +18,7 @@ import java.util.regex.Pattern;
 public class FtpUtils {
 
     public static void main(String[] args) {
-        String s = "奥迪";
-        char c = '奥';
+        System.out.println(new ChangeToPinYin().getStringPinYin("金融"));
     }
 
     private static Logger logger = Logger.getLogger(FtpUtils.class);

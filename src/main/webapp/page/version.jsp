@@ -98,7 +98,7 @@
 //                {field: 'id', title: 'ID', width: 150, align: 'center'},
 //                {field: 'serverId', title: '服务ID', width: 200, align: 'center'},
                 {field: 'serverName', title: '服务名称', width: 200, align: 'center'},
-                {field: 'versionUrl', title: '资源地址', width: 300, align: 'center'},
+                {field: 'versionUrl', title: '资源地址', width: 400, align: 'center'},
                 {field: 'versionCode', title: '版本号', width: 100, align: 'center'},
                 {field: 'title', title: '标题', width: 180, align: 'center'},
                 {field: 'content', title: '更新内容', width: 300, align: 'center'},

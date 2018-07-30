@@ -7,7 +7,6 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public class ChangeToPinYin {
 
         //pinyin4j规则，当转换的符串不是汉字，就返回null
         if (pinyin == null) {
-            return null;
+            return "" + pinYinStr;
         }
 
         //多音字会返回一个多音字拼音的数组，pinyiin4j并不能有效判断该字的读音
@@ -69,8 +68,9 @@ public class ChangeToPinYin {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ChangeToPinYin().getStringPinYin("哈哈你好"));
+        System.out.println(new ChangeToPinYin().getStringPinYin("bug哈哈你好"));
     }
+
     /**
      * 对单个字进行转换
      *
@@ -107,7 +107,7 @@ public class ChangeToPinYin {
             }
         }
 
-        return result.append(sb).append("@").append(initial).toString().toLowerCase().replace("-","").replace(" ","");
+        return result.append(sb).append("@").append(initial).toString().toLowerCase().replace("-", "").replace(" ", "");
 
     }
 }

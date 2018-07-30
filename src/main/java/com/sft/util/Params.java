@@ -15,7 +15,7 @@ public class Params {
         // 总价格
         float total = 2.4f;
 
-        float first = (int) (total * rate * 100)/100f;
+        float first = (int) (total * rate * 100) / 100f;
         int month = (int) Math.ceil(total * (1 - rate) * (1 / (12 * year) + x) * 10000);
         System.out.println("first=" + first + " month=" + month);
 
